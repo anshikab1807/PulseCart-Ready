@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 
 import Product from "./models/Product.js";
-import User from "./models/User.js";
+import user from "./models/user.js";
 import Seller from "./models/Seller.js";
 
 dotenv.config();

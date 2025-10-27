@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const logoUrl = "https://i.postimg.cc/9fwVdFhc/PulseCart-logo.png"; // 🧡 Updated logo (light peach theme)
+const logoUrl = "https://i.postimg.cc/9fwVdFhc/PulseCart-logo.png";
 
 export default function ResetPasswordRequest() {
   const [email, setEmail] = useState("");
