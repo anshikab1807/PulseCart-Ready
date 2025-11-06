@@ -92,7 +92,7 @@ const SellerLogin = () => {
           {/* Left Side (Banner) */}
           <div className="hidden md:flex flex-col justify-center items-center w-full md:w-1/2 bg-[rgb(255,140,66)] text-white p-10">
             <img
-              src="https://images.unsplash.com/photo-1581090467395-22d7dcbd3f38?auto=format&fit=crop&w=800&q=80"
+              src="https://cdn1.vectorstock.com/i/1000x1000/45/70/best-seller-banner-vector-25524570.jpg"
               alt="Seller Banner"
               className="w-full h-auto mb-6 rounded-lg"
             />
