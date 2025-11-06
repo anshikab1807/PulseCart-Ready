@@ -18,7 +18,7 @@ const SellerOnBoarding = () => {
         <div className="max-w-6xl mx-auto">
           <div className="banner rounded-xl overflow-hidden mb-8 shadow-md">
             <img
-              src="https://images.unsplash.com/photo-1612831455544-2aab08a8a27f?auto=format&fit=crop&w=1380&q=80"
+              src="https://t3.ftcdn.net/jpg/02/80/01/60/360_F_280016018_hwMSB40bfAJmrTa842dxVh4yzZy72Kva.jpg"
               alt="Seller Banner"
               className="w-full h-80 object-cover"
             />
@@ -32,7 +32,7 @@ const SellerOnBoarding = () => {
             <div className="step-card border rounded-lg shadow p-4 text-center">
               <h3 className="font-semibold text-lg mb-2">📝 Step 1: Register your account</h3>
               <img
-                src="https://images.unsplash.com/photo-1612831455544-2aab08a8a27f?auto=format&fit=crop&w=400&q=80"
+                src="https://tse1.mm.bing.net/th/id/OIP.ZUr_Eo3wfOLcFHa1YFgbDwHaHb?w=726&h=728&rs=1&pid=ImgDetMain&o=7&rm=3"
                 alt="Register Account"
                 className="mx-auto rounded-md h-40 object-cover"
               />
@@ -40,7 +40,7 @@ const SellerOnBoarding = () => {
             <div className="step-card border rounded-lg shadow p-4 text-center">
               <h3 className="font-semibold text-lg mb-2">📦 Step 2: Choose storage & shipping</h3>
               <img
-                src="https://images.unsplash.com/photo-1605902711622-cfb43c4431b3?auto=format&fit=crop&w=400&q=80"
+                src="https://tse2.mm.bing.net/th/id/OIP.m-3qOr3XmN3yL2S7fRa_jAHaE7?rs=1&pid=ImgDetMain&o=7&rm=3"
                 alt="Storage and Shipping"
                 className="mx-auto rounded-md h-40 object-cover"
               />
@@ -48,7 +48,7 @@ const SellerOnBoarding = () => {
             <div className="step-card border rounded-lg shadow p-4 text-center">
               <h3 className="font-semibold text-lg mb-2">🛍️ Step 3: List your products</h3>
               <img
-                src="https://images.unsplash.com/photo-1605902711622-1f273e5c3d3c?auto=format&fit=crop&w=400&q=80"
+                src="https://tse2.mm.bing.net/th/id/OIP.9PjLIyht4UBqbfVfCEuWGgAAAA?w=450&h=450&rs=1&pid=ImgDetMain&o=7&rm=3"
                 alt="List Products"
                 className="mx-auto rounded-md h-40 object-cover"
               />
@@ -56,7 +56,7 @@ const SellerOnBoarding = () => {
             <div className="step-card border rounded-lg shadow p-4 text-center">
               <h3 className="font-semibold text-lg mb-2">💸 Step 4: Complete orders & get paid</h3>
               <img
-                src="https://images.unsplash.com/photo-1612831455544-8c8a8a27f?auto=format&fit=crop&w=400&q=80"
+                src="https://static.vecteezy.com/system/resources/previews/042/679/203/large_2x/order-completed-package-order-via-mobile-app-service-successfully-received-concept-illustration-flat-design-simple-modern-graphic-element-for-landing-page-ui-infographic-icon-vector.jpg"
                 alt="Get Paid"
                 className="mx-auto rounded-md h-40 object-cover"
               />
