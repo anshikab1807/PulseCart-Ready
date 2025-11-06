@@ -138,7 +138,7 @@ const Signup = () => {
           {/* Right - Illustration */}
           <div className="w-full md:w-1/2 bg-[#FFE8D8] flex items-center justify-center p-4">
             <img
-              src="https://i.pinimg.com/736x/64/bd/60/64bd60e91510d9484cbcd55bb2e66c7d.jpg"
+              src="https://t3.ftcdn.net/jpg/02/80/01/60/360_F_280016018_hwMSB40bfAJmrTa842dxVh4yzZy72Kva.jpg"
               alt="PulseCart Signup Illustration"
               className="w-full h-full object-cover rounded-r-lg shadow-md"
             />
