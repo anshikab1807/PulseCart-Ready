@@ -90,7 +90,7 @@ const Login = () => {
           {/* Right Section (Illustration) */}
           <div className="w-full md:w-1/2 bg-[#fff0e5] flex items-center justify-center p-6 relative">
             <img
-              src="https://i.pinimg.com/736x/b5/a9/78/b5a9786bab9f1536f9a1e0b6e8d8c594.jpg"
+              src="https://media.istockphoto.com/id/1045443496/photo/password.webp?a=1&b=1&s=612x612&w=0&k=20&c=0BwFoJb9DywBbGe__siCMVTERpb6pImOJkSRxYNbILI="
               alt="Illustration"
               className="max-w-full rounded-lg shadow-lg"
             />

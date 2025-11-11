@@ -9,7 +9,6 @@ export default function TrackOrder() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -55,7 +54,9 @@ export default function TrackOrder() {
     }
   };
 
-  if (loading) return <div className="h-screen flex items-center justify-center">Loading...</div>;
+  if (loading)
+    return <div className="h-screen flex items-center justify-center">Loading...</div>;
+
   if (error)
     return (
       <>
@@ -79,32 +80,58 @@ export default function TrackOrder() {
           <div className="grid gap-4">
             {orders.map((order) => (
               <div key={order._id} className="border p-4 rounded shadow">
-                <div className="flex justify-between items-center">
-                  <p className="font-semibold">{order.items.map((i) => i.name).join(", ")}</p>
-                  <p
-                    className={`font-bold ${
-                      order.orderStatus === "Delivered"
-                        ? "text-green-600"
-                        : order.orderStatus === "Cancelled"
-                        ? "text-red-600"
-                        : "text-yellow-600"
-                    }`}
-                  >
-                    {order.orderStatus}
-                  </p>
-                  <p className="font-semibold">₹{order.totalAmount}</p>
+                <div className="flex justify-between items-center flex-wrap gap-2">
+                  <div>
+                    <p className="font-semibold">
+                      {order.items.map((i) => i.name).join(", ")}
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Ordered on:{" "}
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+
+                  <div className="text-right">
+                    <p className="font-semibold text-blue-600">
+                      ₹{order.totalAmount}
+                    </p>
+                    <p
+                      className={`font-bold ${
+                        order.orderStatus === "Delivered"
+                          ? "text-green-600"
+                          : order.orderStatus === "Cancelled"
+                          ? "text-red-600"
+                          : "text-yellow-600"
+                      }`}
+                    >
+                      {order.orderStatus}
+                    </p>
+                    {/* ✅ COD Status Display */}
+                    {order.paymentMethod === "Cash on Delivery" && (
+                      <p
+                        className={`text-sm ${
+                          order.paymentStatus === "Pending"
+                            ? "text-orange-500"
+                            : "text-green-600"
+                        }`}
+                      >
+                        {order.paymentStatus === "Pending"
+                          ? "COD - Payment Pending"
+                          : "COD - Paid"}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <p className="text-sm text-gray-500 mt-1">
-                  Ordered on: {new Date(order.createdAt).toLocaleDateString()}
-                </p>
-                {order.orderStatus === "Pending" && (
+
+                {order.orderStatus === "Pending" ||
+                order.orderStatus === "Placed" ? (
                   <button
                     onClick={() => cancelOrder(order._id)}
-                    className="mt-2 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                    className="mt-3 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                   >
                     Cancel Order
                   </button>
-                )}
+                ) : null}
               </div>
             ))}
           </div>

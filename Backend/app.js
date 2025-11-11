@@ -25,7 +25,7 @@ app.use("/api/orders", orderRoutes); // <-- added
 connectDB();
 
 app.get('/', (req, res) => {
-    res.send('Hello duniyaa');
+    res.send('Welcome to the PulseCart API');
 });
 
 export default app;
