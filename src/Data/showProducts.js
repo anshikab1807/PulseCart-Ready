@@ -13,7 +13,11 @@ const getApiBaseUrl = () => {
   return 'http://localhost:5001/api';
 };
 
-const API_BASE_URL = getApiBaseUrl();
+// Temporary hardcode for production
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 
+  (window.location.hostname === 'localhost' 
+    ? 'http://localhost:5001/api'
+    : 'https://pulsecart-backend.onrender.com/api');
 
 let currentCategory = null;
 
