@@ -1,5 +1,19 @@
-// Get the base URL from environment variable
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+// IMPORTANT: Get API URL with proper fallback
+const getApiBaseUrl = () => {
+  // In production (Vercel), use the environment variable
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  
+  if (envUrl) {
+    console.log('Using API URL from environment:', envUrl);
+    return envUrl;
+  }
+  
+  // Fallback for local development
+  console.warn('VITE_API_BASE_URL not found, using localhost');
+  return 'http://localhost:5001/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 let currentCategory = null;
 
@@ -7,17 +21,23 @@ let currentCategory = null;
 async function fetchProductsByCategory(category) {
   try {
     console.log(`Fetching products for category: ${category}`);
-    console.log(`Using API URL: ${API_BASE_URL}`); // Debug log
+    console.log(`Using API URL: ${API_BASE_URL}`);
     
-    const response = await fetch(`${API_BASE_URL}/products/category/${category}`, {
+    const url = `${API_BASE_URL}/products/category/${category}`;
+    console.log(`Full URL: ${url}`);
+    
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
+      // Add timeout
+      signal: AbortSignal.timeout(10000), // 10 second timeout
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
 
     const products = await response.json();
@@ -25,6 +45,10 @@ async function fetchProductsByCategory(category) {
     return products;
   } catch (error) {
     console.error('Error fetching products:', error);
+    // Provide more specific error message
+    if (error.name === 'AbortError') {
+      throw new Error('Request timeout - server might be sleeping');
+    }
     throw error;
   }
 }
@@ -46,6 +70,7 @@ async function showProducts(category) {
   container.innerHTML = `
     <div class="col-span-full text-center py-10 text-[#FF8C42] text-lg font-semibold animate-pulse">
       Loading products...
+      <p class="text-sm text-gray-600 mt-2">This may take a moment if the server is waking up</p>
     </div>
   `;
 
@@ -98,7 +123,8 @@ async function showProducts(category) {
     container.innerHTML = `
       <div class="col-span-full text-center py-10">
         <p class="text-red-600 mb-2 font-semibold">Failed to fetch products</p>
-        <p class="text-sm text-gray-600">${error.message}</p>
+        <p class="text-sm text-gray-600 mb-2">${error.message}</p>
+        <p class="text-xs text-gray-500 mb-4">API URL: ${API_BASE_URL}</p>
         <button onclick="showProducts('${category}')"
           class="mt-4 bg-[#FF8C42] text-white px-6 py-2 rounded-xl font-semibold hover:bg-[#FFCBA4] hover:text-[#FF8C42] transition-colors duration-300">
           Try Again
@@ -118,4 +144,4 @@ function addToCart(productId) {
 window.showProducts = showProducts;
 window.addToCart = addToCart;
 
-export default showProducts;// Updated Wed Nov 12 20:10:41 IST 2025
+export default showProducts;
