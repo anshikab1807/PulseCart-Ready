@@ -118,4 +118,4 @@ function addToCart(productId) {
 window.showProducts = showProducts;
 window.addToCart = addToCart;
 
-export default showProducts;
+export default showProducts;// Updated Wed Nov 12 20:10:41 IST 2025
