@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:5001/api/products';
+// Get the base URL from environment variable
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 let currentCategory = null;
 
@@ -6,7 +7,9 @@ let currentCategory = null;
 async function fetchProductsByCategory(category) {
   try {
     console.log(`Fetching products for category: ${category}`);
-    const response = await fetch(`${API_BASE_URL}/category/${category}`, {
+    console.log(`Using API URL: ${API_BASE_URL}`); // Debug log
+    
+    const response = await fetch(`${API_BASE_URL}/products/category/${category}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
