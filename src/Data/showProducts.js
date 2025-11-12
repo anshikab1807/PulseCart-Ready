@@ -1,12 +1,17 @@
-const API_BASE_URL = 'http://localhost:3000/api/products';
+const API_BASE_URL = 'http://localhost:5001/api/products';
 
-let currentCategory = null; // Keep track of the currently shown category
+let currentCategory = null;
 
 // Function to fetch products from backend
 async function fetchProductsByCategory(category) {
   try {
     console.log(`Fetching products for category: ${category}`);
-    const response = await fetch(`${API_BASE_URL}/category/${category}`);
+    const response = await fetch(`${API_BASE_URL}/category/${category}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

@@ -17,7 +17,8 @@ const Category = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/api/products/category/${category}`)
+    // ✅ FIXED: Changed from localhost:3000 to localhost:5001
+    fetch(`http://localhost:5001/api/products/category/${category}`)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
@@ -37,7 +38,8 @@ const Category = () => {
       return;
     }
     try {
-      const res = await fetch("http://localhost:3000/api/cart/add", {
+      // ✅ FIXED: Changed from localhost:3000 to localhost:5001
+      const res = await fetch("http://localhost:5001/api/cart/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,6 +57,9 @@ const Category = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#fff7f2]">
+        <div className="text-[rgb(255,140,66)] text-xl font-semibold animate-pulse">
+          Loading products...
+        </div>
       </div>
     );
   }
