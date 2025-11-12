@@ -1,8 +1,10 @@
 // src/config/api.js
 import axios from 'axios';
 
-// Backend base URL - Your backend runs on port 3000
-const BASE_URL = 'http://localhost:3000/api';
+const baseFromEnv = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = baseFromEnv
+  ? baseFromEnv.replace(/\/$/, '')
+  : '/api';
 
 const api = axios.create({
   baseURL: BASE_URL,

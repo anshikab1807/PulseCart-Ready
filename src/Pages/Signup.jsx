@@ -5,7 +5,7 @@ import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
 const BASE_API_URL =
-  import.meta.env.VITE_BACKEND_API_URL || "http://localhost:3000";
+  import.meta.env.VITE_BACKEND_API_URL || "http://localhost:5000";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
