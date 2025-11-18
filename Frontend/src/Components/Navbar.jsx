@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   ShoppingCart,
-  Bell,
   User as UserIcon,
   Search as SearchIcon,
   LogOut,
@@ -101,75 +100,116 @@ function ProfileMenu({ user, onLogin, onLogout }) {
   );
 }
 
-// Desktop category with dropdown
-function DesktopCategory({ item }) {
-  const hasSubs = Array.isArray(item.links) && item.links.length > 0;
-  const baseCat = getCatFromHref(item.href);
+
+
+// ✨✨✨ NEW SEARCH BAR WITH LIVE SUGGESTIONS ✨✨✨
+function SearchBar({ onSearch }) {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
+
+  // Fetch suggestions
+  useEffect(() => {
+    if (query.trim() === "") {
+      setResults([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/products/search?q=${query}`
+        );
+        const data = await res.json();
+        setResults(data);
+        setShowDropdown(true);
+      } catch (err) {
+        console.log(err);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  // Submit search
+  function submit(e) {
+    e.preventDefault();
+    if (!query.trim()) return;
+    navigate(`/search?q=${query}`);
+    setShowDropdown(false);
+  }
+
+  // Hide dropdown on click outside
+  useEffect(() => {
+    const handler = (e) => {
+      if (!e.target.closest(".search-container")) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, []);
+
 
   return (
-    <li className="relative group">
-      <NavLink
-        to={item.href || "#"}
-        className={({ isActive }) =>
-          cn(
-            "px-2 py-1 transition-colors duration-150 flex items-center gap-1",
-            isActive ? "text-peach-500" : "text-white hover:text-peach-500"
-          )
-        }
-      >
-        {item.label}
-        {hasSubs && <span aria-hidden="true">▾</span>}
-      </NavLink>
-      {hasSubs && (
-        <ul className="absolute left-0 mt-2 bg-gray-800 text-white rounded-md shadow-lg z-50 py-2 px-3 min-w-[12rem] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-          {item.links.map((sub, subIdx) => (
-            <li key={subIdx} className="py-1 px-1 rounded">
-              <Link
-                to={`/category?cat=${encodeURIComponent(baseCat ?? "")}&sub=${encodeURIComponent(sub)}`}
-                className="block w-full rounded px-2 py-1 hover:bg-peach-500 hover:text-black"
-              >
-                {sub}
-              </Link>
+    <div className="relative w-full max-w-2xl search-container">
+      <form onSubmit={submit} className="relative w-full">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setShowDropdown(true);
+          }}
+          placeholder="Search products..."
+          className="w-full pl-12 pr-12 py-3 border border-gray-600 rounded-full bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-peach-500"
+        />
+
+        <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+
+        <button
+          type="submit"
+          className="absolute right-3 top-1/2 -translate-y-1/2 bg-peach-500 hover:bg-peach-600 px-3 py-1 rounded-full text-black text-sm"
+        >
+          Go
+        </button>
+      </form>
+
+      {/* Suggestions */}
+      {showDropdown && results.length > 0 && (
+        <ul className="absolute top-full left-0 w-full bg-gray-900 border border-gray-700 mt-2 rounded-xl shadow-xl max-h-72 overflow-y-auto z-50 text-white">
+          {results.map((item) => (
+            <li
+              key={item._id}
+              onClick={() => navigate(`/product/${item._id}`)}
+              className="flex items-center gap-3 p-3 cursor-pointer hover:bg-gray-800"
+            >
+              <img
+                src={item.image}
+                alt=""
+                className="w-12 h-12 object-cover rounded-md border border-gray-700"
+              />
+              <div>
+                <p className="font-medium">{item.name}</p>
+                <p className="text-peach-500 text-sm">₹{item.price}</p>
+              </div>
             </li>
           ))}
         </ul>
       )}
-    </li>
+
+      {/* No results */}
+      {showDropdown && query && results.length === 0 && (
+        <div className="absolute top-full left-0 w-full mt-2 bg-gray-900 border border-gray-700 rounded-xl p-4 text-center text-gray-300">
+          No products found
+        </div>
+      )}
+    </div>
   );
 }
 
-// Search bar
-function SearchBar({ onSearch }) {
-  const [query, setQuery] = useState("");
-  const navigate = useNavigate();
 
-  function submit(e) {
-    e.preventDefault();
-    const q = query.trim();
-    if (!q) return;
-    if (onSearch) onSearch(q);
-    else navigate(`/search?q=${encodeURIComponent(q)}`);
-  }
-
-  return (
-    <form onSubmit={submit} className="relative w-full max-w-2xl">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for products, categories, or ideas..."
-        className="w-full pl-12 pr-12 py-3 border border-gray-600 rounded-full shadow-sm bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-peach-500 focus:border-peach-500"
-      />
-      <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-      <button
-        type="submit"
-        className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-black bg-peach-500 hover:bg-peach-600 px-3 py-1 rounded-full"
-      >
-        Go
-      </button>
-    </form>
-  );
-}
 
 // Badge component
 function Badge({ count }) {
@@ -182,29 +222,20 @@ function Badge({ count }) {
   );
 }
 
+
+
 // Navbar main
 const Navbar = ({ cartCount, onSearch }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [currentNotificationCount, setCurrentNotificationCount] = useState(0);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("token");
     if (storedUser && token) setUser(storedUser);
-
-    const checkNotifications = () => {
-      const storedCount = Number(localStorage.getItem("notificationCount") || 0);
-      setCurrentNotificationCount(prev => (prev !== storedCount ? storedCount : prev));
-    };
-
-    checkNotifications();
-    const intervalId = setInterval(checkNotifications, 1000);
-    return () => clearInterval(intervalId);
   }, []);
 
   const cartQty = cartCount || Number(localStorage.getItem("cartCount") || 0);
-  const notifQty = currentNotificationCount;
 
   const handleLogin = () => navigate("/login");
   const handleLogout = () => {
@@ -216,12 +247,17 @@ const Navbar = ({ cartCount, onSearch }) => {
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-black shadow-md font-inter px-6">
-      <div className="h-20 flex items-center justify-between gap-6">
-        <div className="flex-1 flex justify-center">
+
+      {/* TOP ROW */}
+      <div className="h-20 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+
+        {/* Center Search Bar */}
+        <div className="w-full sm:flex-1 flex justify-center order-2 sm:order-1">
           <SearchBar onSearch={onSearch} />
         </div>
 
-        <div className="flex items-center gap-4">
+        {/* Right-side icons */}
+        <div className="flex items-center gap-4 order-1 sm:order-2">
           <ProfileMenu user={user} onLogin={handleLogin} onLogout={handleLogout} />
 
           <Link
@@ -231,19 +267,29 @@ const Navbar = ({ cartCount, onSearch }) => {
             <ShoppingCart className="w-5 h-5" />
             <Badge count={cartQty} />
           </Link>
-
         </div>
       </div>
 
+
+
+      {/* CATEGORY ROW */}
       <div className="pb-3">
         <div className="bg-black text-white text-center py-2 px-4 rounded-full font-semibold shadow-md">
           <ul className="flex flex-wrap justify-center items-center gap-6">
             {NAV_ITEMS.map((item) => (
-              <DesktopCategory key={item.label} item={item} />
+              <li key={item.label}>
+                <NavLink
+                  to={item.href}
+                  className="px-2 py-1 text-white hover:text-peach-500"
+                >
+                  {item.label}
+                </NavLink>
+              </li>
             ))}
           </ul>
         </div>
       </div>
+
     </nav>
   );
 };

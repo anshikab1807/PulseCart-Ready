@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./SimpleAIChat.css"; // Make sure you use the peach CSS I provided earlier
+import "./SimpleAIChat.css"; 
 
 const SimpleAIChat = () => {
   const [isOpen, setIsOpen] = useState(false);
